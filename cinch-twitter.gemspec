@@ -7,10 +7,10 @@ Gem::Specification.new do |spec|
   
   spec.name          = "cinch-twitter"
   spec.version       = Cinch::Twitter::VERSION
-  spec.authors       = ["Mark Seymour" "Richard Banks"]
+  spec.authors       = ["Mark Seymour"    "Richard Banks"]
   spec.email         = ["mark.seymour.ns@gmail.com" "namaste@rawnet.net"]
   spec.description   = %q{A Twitter plugin for Cinch.}
-  spec.summary       = %q{A Cinch plugin for accessing Twitter.}
+  spec.summary       = %q{A Cinch plugin for accessing Twitter. Even includes a search feature!}
   spec.homepage      = "https://github.com/mseymour/cinch-twitter"
   spec.license       = "MIT"
 
