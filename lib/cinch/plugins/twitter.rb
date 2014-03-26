@@ -10,15 +10,6 @@ module Cinch
     class Twitter
       include Cinch::Plugin
 
-      set :plugin_name, 'twitter'
-      set :help, <<-USAGE.gsub(/^ {6}/, '')
-        A Twitter plugin for the bot!
-        Usage:
-        * !tw <handle(-D)>: Fetch the latest Tweet from the bot or include an offset (I.E. !tw someuser-2) to fetch (-D) Tweets back (up to 19)
-        * @<handle(-D): Same as above, just shorthand.
-        * !t-search <terms>: Searches recent tweets containing your terms and returns the most recent three. You can search hash tags or do 'to:<handle>' to get the most recent tweets sent to that handle.
-        USAGE
-
       def initialize(*args)
         super
           @client = twitter_client
@@ -26,6 +17,7 @@ module Cinch
 
       match /tw (\w+)(?:-(\d+))?$/, method: :execute_tweet
       match /(\w+)(?:-(\d+))?$/, method: :execute_tweet, prefix: /^@/
+
 
       def execute_tweet(m, username, offset)
         offset ||= 0
@@ -57,6 +49,29 @@ module Cinch
         m.reply format_tweet(tweet)
       end
     end
+
+        if offset.to_i > 0
+          tweets = @client.user_timeline(user)
+          return m.reply "You can not backtrack more than #{tweets.count.pred} tweets before the current tweet!" if offset.to_i > tweets.count.pred
+          tweet = tweets[offset.to_i]
+
+        else
+          tweet = user.status
+        end
+        m.reply format_tweet(tweet)
+      rescue ::Twitter::Error::NotFound => e
+        m.reply "#{username} doesn't exist."
+      rescue ::Twitter::Error => e
+      m.reply "#{e.message.gsub(/user/i, username)}. (#{e.class})"
+      end
+
+      def loadfile
+        if File.exist?('docs/userinfo.yaml')
+          @storage = YAML.load_file('docs/userinfo.yaml')
+        else
+          @storage = {}
+        end
+      end
 
       match /tw #(\d+)$/, method: :execute_id
       match /#(\d+)$/, method: :execute_id, prefix: /^@/
