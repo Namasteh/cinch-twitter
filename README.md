@@ -23,6 +23,9 @@ Or install it yourself as:
 * `!tw <username><+D>` - Gets the latest tweet of the specified user, or the tweet 'D' tweets back, between 1 and 20.
 * `!tw #[id]` - Gets the tweet at the specified ID
 
+* `!t-search <terms>` - Gets the top three tweets matching your terms. Such as:
+'!t-search to:rickahbanks` - Will return the three most recent tweets to the user rickahbanks. You can also search for hash tags.
+
 Shorthand commands are also available: 
 * `@[username]<+D>`, `@#[id]`
 
